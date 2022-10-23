@@ -5,12 +5,17 @@
 #include <string.h>
 #include "htab_struc.h"
 #include "htab.h"
-htab_pair_t * htab_find(htab_t * t, htab_key_t key) {
-    unsigned index = (htab_hash_function(key) % t->arr_size);
-    unsigned key_len = strlen(key);
-    for (struct htab_item *item = t->arr_ptr[index]; item != NULL; item = item->next) {
-        if ((key_len == strlen(item->pair.key)) && (!strcmp(item->pair.key, key))) {
-            return &(item->pair);
+
+htab_pair_t * htab_find(htab_t * t, htab_key_t key){
+    //loopovanie prvkami
+    for(size_t i = 0; i<t->arr_size; i++){
+        struct htab_item *j=t->arr_ptr[i];
+        while(j!=NULL){
+            //porovnanie stringov
+            if(strcmp(j->pair.key, key)==0){
+                return &(j->pair);
+            }
+            j=j->next;
         }
     }
     return NULL;
